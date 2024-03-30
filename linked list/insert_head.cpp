@@ -1,112 +1,93 @@
-#include <bits/stdc++.h>
+#include <iostream>
 
-using namespace std;
-class Node
-{
+class Node {
 public:
-    int value;
-    Node *next_value;
-    Node(int value)
-    {
-        this->value = value;
-        this->next_value = NULL;
+    int data;
+    Node* next;
+
+    Node(int value) {
+        this->data = value;
+        this->next = nullptr;
     }
 };
-void priting(Node *head)
-{
-    Node *tmp = head;
-    while (tmp != NULL)
-    {
-        cout << tmp->value << " ";
-        tmp = tmp->next_value;
-    }
-    cout << endl;
-}
-int size(Node *head)
-{
-    Node *tmp = head;
-    int cnt = 0;
-    while (tmp != NULL)
-    {
-        cnt++;
-        tmp = tmp->next_value;
-    }
 
-    return cnt;
-}
-void insert_list(Node *head, int pos, int val)
-{
-
-    Node *tmp = head;
-    Node *newnode = new Node(val);
-    for (int i = 0; i < pos - 1; i++)
-    {
-        tmp = tmp->next_value;
+void printList(Node* head) {
+    Node* current = head;
+    while (current != nullptr) {
+        std::cout << current->data << " ";
+        current = current->next;
     }
-    newnode->next_value = tmp->next_value;
-    tmp->next_value = newnode;
+    std::cout << std::endl;
 }
 
-void insert_head(Node *&head, int val)
-{
-    Node *newnode = new Node(val);
-    newnode->next_value = head;
-    head = newnode;
+int size(Node* head) {
+    Node* current = head;
+    int count = 0;
+    while (current != nullptr) {
+        count++;
+        current = current->next;
+    }
+    return count;
 }
 
-void insert_tail(Node *&head, Node *&tail, int val)
-{
-    Node* newnode = new Node (val);
-    if ( head == NULL)
-    {
-        head = newnode;
-        tail = newnode;
-        return;
+void insertAtIndex(Node* head, int position, int value) {
+    Node* current = head;
+    Node* newNode = new Node(value);
+    for (int i = 0; i < position - 1; i++) {
+        current = current->next;
     }
-    else 
-    {
-        tail->next_value= newnode;
-        tail = newnode;
-    }
-    
+    newNode->next = current->next;
+    current->next = newNode;
 }
-int main()
-{
-    Node *head = new Node(10);
-    Node *a = new Node(20);
-    Node *b = new Node(30);
-    Node *c = new Node(40);
-    Node *d = new Node(50);
-    Node *tail = d;
-    head->next_value = a;
-    a->next_value = b;
-    b->next_value = c;
-    c->next_value = d;
-    priting(head);
 
-    int pos, val;
-    cout << "Enter your position :";
-    cin >> pos;
-    cout << "Enter your value : ";
-    cin >> val;
-    if (size(head) < pos)
-    {
-        cout << "Invalid Position !" << endl;
-    }
-    else if (pos == 0)
-    {
-        insert_head(head, val);
-    }
-    else if (pos == size(head))
-    {
-        insert_tail(head, tail, val);
-    }
-    else
-    {
+void insertAtHead(Node*& head, int value) {
+    Node* newNode = new Node(value);
+    newNode->next = head;
+    head = newNode;
+}
 
-        insert_list(head, pos, val);
+void insertAtTail(Node*& head, Node*& tail, int value) {
+    Node* newNode = new Node(value);
+    if (head == nullptr) {
+        head = tail = newNode;
+    } else {
+        tail->next = newNode;
+        tail = newNode;
+    }
+}
+
+int main() {
+    Node* head = new Node(10);
+    Node* a = new Node(20);
+    Node* b = new Node(30);
+    Node* c = new Node(40);
+    Node* d = new Node(50);
+    Node* tail = d;
+
+    head->next = a;
+    a->next = b;
+    b->next = c;
+    c->next = d;
+
+    printList(head);
+
+    int position, value;
+    std::cout << "Enter the position to insert: ";
+    std::cin >> position;
+    std::cout << "Enter the value to insert: ";
+    std::cin >> value;
+
+    if (size(head) < position) {
+        std::cout << "Invalid Position!" << std::endl;
+    } else if (position == 0) {
+        insertAtHead(head, value);
+    } else if (position == size(head)) {
+        insertAtTail(head, tail, value);
+    } else {
+        insertAtIndex(head, position, value);
     }
 
-    priting(head);
+    printList(head);
+
     return 0;
 }
