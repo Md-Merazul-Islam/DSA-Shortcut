@@ -11,83 +11,134 @@ public:
     }
 };
 
-void printList(Node* head) {
-    Node* current = head;
-    while (current != nullptr) {
-        std::cout << current->data << " ";
-        current = current->next;
-    }
-    std::cout << std::endl;
-}
-
-int size(Node* head) {
-    Node* current = head;
-    int count = 0;
-    while (current != nullptr) {
-        count++;
-        current = current->next;
-    }
-    return count;
-}
-
-void insertAtIndex(Node* head, int position, int value) {
-    Node* current = head;
+void insertTail(Node*& head, int value) {
     Node* newNode = new Node(value);
-    for (int i = 0; i < position - 1; i++) {
-        current = current->next;
+    if (head == nullptr) {
+        head = newNode;
+        return;
     }
-    newNode->next = current->next;
-    current->next = newNode;
+
+    Node* tmp = head;
+    while (tmp->next != nullptr) {
+        tmp = tmp->next;
+    }
+    tmp->next = newNode;
 }
 
-void insertAtHead(Node*& head, int value) {
+void printNode(Node* head) {
+    Node* tmp = head;
+    std::cout << std::endl << "Printing values:" << std::endl << std::endl;
+    while (tmp != nullptr) {
+        std::cout << tmp->data << " ";
+        tmp = tmp->next;
+    }
+    std::cout << std::endl << std::endl;
+}
+
+void insertAtPosition(Node*& head, int pos, int value) {
     Node* newNode = new Node(value);
-    newNode->next = head;
+    Node* tmp = head;
+    for (int i = 1; i <= pos - 1; i++) {
+        tmp = tmp->next;
+        if (tmp == nullptr) {
+            std::cout << std::endl << "Invalid position" << std::endl << std::endl;
+            return;
+        }
+    }
+    newNode->next = tmp->next;
+    tmp->next = newNode;
+}
+
+void insertHead(Node*& head, int value) {
+    Node* newNode = new Node(value);
+    Node* tmp = head;
+    newNode->next = tmp;
     head = newNode;
 }
 
-void insertAtTail(Node*& head, Node*& tail, int value) {
-    Node* newNode = new Node(value);
-    if (head == nullptr) {
-        head = tail = newNode;
-    } else {
-        tail->next = newNode;
-        tail = newNode;
+void deletePosition(Node*& head, int pos) {
+    Node* tmp = head;
+    for (int i = 1; i <= pos - 1; i++) {
+        tmp = tmp->next;
+        if (tmp == nullptr) {
+            std::cout << std::endl << "Invalid position" << std::endl << std::endl;
+            return;
+        }
     }
+    if (tmp->next == nullptr) {
+        std::cout << std::endl << "Invalid position" << std::endl << std::endl;
+        return;
+    }
+    Node* deleteNode = tmp->next;
+    tmp->next = tmp->next->next;
+    delete deleteNode;
+}
+
+void deleteHead(Node*& head) {
+    if (head == nullptr) {
+        std::cout << std::endl << "Invalid position" << std::endl << std::endl;
+        return;
+    }
+    Node* deleteNode = head;
+    head = head->next;
+    delete deleteNode;
 }
 
 int main() {
-    Node* head = new Node(10);
-    Node* a = new Node(20);
-    Node* b = new Node(30);
-    Node* c = new Node(40);
-    Node* d = new Node(50);
-    Node* tail = d;
+    Node* head = nullptr;
+    while (true) {
+        std::cout << "Option 1: Insert at tail" << std::endl;
+        std::cout << "Option 2: Print" << std::endl;
+        std::cout << "Option 3: Insert at any position" << std::endl;
+        std::cout << "Option 4: Insert at head" << std::endl;
+        std::cout << "Option 5: Delete at position" << std::endl;
+        std::cout << "Option 6: Delete at head" << std::endl;
+        std::cout << "Option 7: Exit" << std::endl << std::endl;
+        int option;
+        std::cout << "Choose option: ";
+        std::cin >> option;
+        std::cout << std::endl;
 
-    head->next = a;
-    a->next = b;
-    b->next = c;
-    c->next = d;
-
-    printList(head);
-
-    int position, value;
-    std::cout << "Enter the position to insert: ";
-    std::cin >> position;
-    std::cout << "Enter the value to insert: ";
-    std::cin >> value;
-
-    if (size(head) < position) {
-        std::cout << "Invalid Position!" << std::endl;
-    } else if (position == 0) {
-        insertAtHead(head, value);
-    } else if (position == size(head)) {
-        insertAtTail(head, tail, value);
-    } else {
-        insertAtIndex(head, position, value);
+        if (option == 1) {
+            int value;
+            std::cout << "Enter value to insert at tail: ";
+            std::cin >> value;
+            insertTail(head, value);
+        } else if (option == 2) {
+            printNode(head);
+        } else if (option == 3) {
+            int position, value;
+            std::cout << "Enter position: ";
+            std::cin >> position;
+            std::cout << "Enter value: ";
+            std::cin >> value;
+            if (position == 0) {
+                insertHead(head, value);
+            } else {
+                insertAtPosition(head, position, value);
+            }
+        } else if (option == 4) {
+            int value;
+            std::cout << "Enter value to insert at head: ";
+            std::cin >> value;
+            insertHead(head, value);
+        } else if (option == 5) {
+            int position;
+            std::cout << "Enter position to delete: ";
+            std::cin >> position;
+            if (position == 0) {
+                deleteHead(head);
+            } else {
+                deletePosition(head, position);
+            }
+        } else if (option == 6) {
+            deleteHead(head);
+        } else if (option == 7) {
+            std::cout << "Program finished" << std::endl;
+            break;
+        } else {
+            std::cout << "Invalid option" << std::endl;
+        }
     }
-
-    printList(head);
-
     return 0;
 }
