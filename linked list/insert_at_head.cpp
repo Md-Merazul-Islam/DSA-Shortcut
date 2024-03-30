@@ -13,52 +13,6 @@ public:
     }
 };
 
-void insert_at_position(Node *&head, int v)
-{
-    Node *newnode = new Node(v);
-    if (head == NULL)
-    {
-        head = newnode;
-        cout<<endl<<"Inserted at head"<<endl<<endl;
-        return;
-    }
-    Node *tmp = head;
-    while (tmp->next_value != NULL)
-    {
-        tmp = tmp->next_value;
-    }
-    tmp->next_value = newnode;
-    cout<<endl<<"Inserted at tail"<<endl<<endl;
-
-
-}
-
-void priting_linked_list(Node *head){
-    Node* tmp = head;
-     cout<<" Your linked list :"<<endl;
-     while (tmp != NULL)
-     {
-        cout<<tmp->value<<" ";
-        tmp=tmp->next_value;
-     }
-     cout<<endl;
-}
-
-void  insert_pos_value(Node*head,int pos,int v)
-{
-    Node * newNode = new Node(v);
-    Node*tmp = head ;
-
-    for (int i=1;i<=pos-1;i++)
-    {
-        tmp = tmp->next_value;
-
-    }
-    newNode->next_value = tmp->next_value;
-    tmp->next_value = newNode;
-    cout<< endl<<endl << "Inserted at position "<<pos<<endl<<endl;
-}
-
 void insert_at_head(Node*&head,int v)
 {
     Node* newnode = new Node(v);
